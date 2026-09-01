@@ -1,0 +1,175 @@
+:root {
+  --bg: #0a0e1a;
+  --bg-alt: #0d1322;
+  --card: rgba(255, 255, 255, 0.04);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --text: #e8ecf4;
+  --text-dim: #9aa3b5;
+  --primary: #7c5cff;
+  --primary-2: #3ec6ff;
+  --accent: #22d3ee;
+  --grad: linear-gradient(120deg, #7c5cff 0%, #3ec6ff 100%);
+  --radius: 16px;
+  --maxw: 1140px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+a { color: inherit; text-decoration: none; }
+
+/* ---------- 背景装饰 ---------- */
+.bg-grid {
+  position: fixed; inset: 0; z-index: -3; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 60%, transparent 100%);
+}
+
+.bg-glow {
+  position: fixed; z-index: -2; border-radius: 50%;
+  filter: blur(120px); opacity: 0.35; pointer-events: none;
+}
+.bg-glow--1 { width: 520px; height: 520px; top: -160px; left: -100px; background: #7c5cff; }
+.bg-glow--2 { width: 460px; height: 460px; top: 30%; right: -180px; background: #3ec6ff; }
+
+/* ---------- 导航 ---------- */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(16px);
+  background: rgba(10, 14, 26, 0.7);
+  border-bottom: 1px solid var(--card-border);
+}
+.nav__inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; }
+.brand__logo {
+  display: grid; place-items: center; width: 36px; height: 36px;
+  border-radius: 10px; background: var(--grad); color: #fff;
+  font-family: ui-monospace, monospace; font-size: 15px;
+}
+.brand__name { font-size: 18px; letter-spacing: 0.5px; }
+
+.nav__links { display: flex; gap: 28px; }
+.nav__links a { color: var(--text-dim); font-size: 15px; transition: color .2s; }
+.nav__links a:hover { color: var(--text); }
+
+.nav__toggle { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 6px; }
+.nav__toggle span { width: 22px; height: 2px; background: var(--text); border-radius: 2px; transition: .3s; }
+
+/* ---------- 按钮 ---------- */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 26px; border-radius: 12px; font-size: 15px; font-weight: 600;
+  transition: transform .2s, box-shadow .2s, background .2s; cursor: pointer;
+}
+.btn--primary { background: var(--grad); color: #fff; box-shadow: 0 8px 24px rgba(124, 92, 255, .35); }
+.btn--primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(124, 92, 255, .5); }
+.btn--ghost { border: 1px solid var(--card-border); color: var(--text); background: rgba(255,255,255,0.03); }
+.btn--ghost:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); }
+
+/* ---------- Hero ---------- */
+.hero { padding: 120px 0 80px; text-align: center; }
+.hero__badge {
+  display: inline-block; padding: 6px 16px; border-radius: 999px;
+  background: rgba(124, 92, 255, 0.12); border: 1px solid rgba(124, 92, 255, 0.3);
+  color: #b9a7ff; font-size: 14px; margin-bottom: 28px;
+}
+.hero__title { font-size: clamp(40px, 7vw, 72px); line-height: 1.15; font-weight: 800; letter-spacing: 1px; }
+.grad-text {
+  background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.hero__desc { color: var(--text-dim); font-size: 18px; margin: 24px auto 36px; max-width: 560px; }
+.hero__actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+.hero__stats { display: flex; justify-content: center; gap: 56px; margin-top: 64px; flex-wrap: wrap; }
+.stat { display: flex; flex-direction: column; gap: 4px; }
+.stat__num { font-size: 34px; font-weight: 800; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.stat__label { color: var(--text-dim); font-size: 14px; }
+
+/* ---------- Section 通用 ---------- */
+.section { padding: 90px 0; }
+.section--alt { background: var(--bg-alt); border-top: 1px solid var(--card-border); border-bottom: 1px solid var(--card-border); }
+.section__head { text-align: center; margin-bottom: 56px; }
+.section__tag { display: inline-block; font-size: 13px; letter-spacing: 3px; color: var(--accent); font-weight: 600; margin-bottom: 12px; }
+.section__title { font-size: clamp(28px, 4vw, 40px); font-weight: 800; }
+.section__sub { color: var(--text-dim); margin-top: 10px; }
+
+.glass {
+  background: var(--card); border: 1px solid var(--card-border);
+  backdrop-filter: blur(12px); border-radius: var(--radius);
+}
+
+/* ---------- 产品卡片 ---------- */
+.products { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+.product { overflow: hidden; transition: transform .3s, border-color .3s; display: flex; flex-direction: column; }
+.product:hover { transform: translateY(-6px); border-color: rgba(124, 92, 255, 0.4); }
+.product__cover {
+  height: 160px; display: grid; place-items: center; font-size: 52px;
+  background: linear-gradient(135deg, rgba(124,92,255,0.18), rgba(62,198,255,0.14));
+}
+.product__body { padding: 22px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.product__title { font-size: 20px; font-weight: 700; }
+.product__desc { color: var(--text-dim); font-size: 14.5px; flex: 1; }
+.product__meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.tag { font-size: 12px; padding: 3px 10px; border-radius: 999px; background: rgba(124,92,255,0.14); color: #b9a7ff; }
+.product__links { display: flex; gap: 14px; margin-top: 6px; }
+.product__links a { font-size: 14px; color: var(--accent); font-weight: 600; }
+.product__links a:hover { text-decoration: underline; }
+
+/* ---------- 关于 ---------- */
+.about { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+.about__card { padding: 32px; text-align: center; transition: transform .3s; }
+.about__card:hover { transform: translateY(-4px); }
+.about__icon { font-size: 40px; margin-bottom: 16px; }
+.about__card h3 { font-size: 20px; margin-bottom: 10px; }
+.about__card p { color: var(--text-dim); font-size: 15px; }
+
+/* ---------- 技术栈 ---------- */
+.stack { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; }
+.stack__item { display: flex; align-items: center; gap: 10px; padding: 14px 22px; font-size: 15px; font-weight: 600; }
+.stack__dot { width: 10px; height: 10px; border-radius: 50%; background: var(--c); box-shadow: 0 0 10px var(--c); }
+
+/* ---------- CTA ---------- */
+.cta { padding: 64px 32px; text-align: center; max-width: 720px; margin: 0 auto; }
+.cta__title { font-size: clamp(26px, 4vw, 36px); font-weight: 800; margin-bottom: 12px; }
+.cta__desc { color: var(--text-dim); margin-bottom: 28px; }
+
+/* ---------- Footer ---------- */
+.footer { border-top: 1px solid var(--card-border); padding: 32px 0; }
+.footer__inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+.brand--sm .brand__name { font-size: 16px; }
+.brand--sm .brand__logo { width: 30px; height: 30px; font-size: 13px; }
+.footer__copy { color: var(--text-dim); font-size: 14px; }
+
+/* ---------- 动画 ---------- */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+.reveal { opacity: 0; animation: fadeUp .7s ease forwards; }
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 760px) {
+  .nav__links, .nav__cta { display: none; }
+  .nav__toggle { display: flex; }
+  .nav__links.open {
+    display: flex; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0;
+    background: rgba(10, 14, 26, 0.96); padding: 20px 24px; gap: 18px; border-bottom: 1px solid var(--card-border);
+  }
+  .hero { padding: 80px 0 60px; }
+  .hero__stats { gap: 32px; }
+  .hide-sm { display: none; }
+}
