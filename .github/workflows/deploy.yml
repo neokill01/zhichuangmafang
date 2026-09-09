@@ -1,0 +1,38 @@
+name: Deploy to Tencent Server
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install rsync
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y rsync
+          rsync --version | head -1
+
+      - name: Load deploy SSH key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
+
+      - name: Trust server host
+        run: ssh-keyscan -H 82.156.112.159 >> ~/.ssh/known_hosts
+
+      - name: Sync website files to /var/www/site
+        run: |
+          # 仅同步官网页面，营销/素材文件不部署
+          rsync -az --delete \
+            index.html favicon.svg \
+            css/ js/ \
+            ubuntu@82.156.112.159:/var/www/site/
+
+      - name: Reload nginx
+        run: ssh ubuntu@82.156.112.159 'sudo systemctl reload nginx'
