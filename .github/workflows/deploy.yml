@@ -28,10 +28,13 @@ jobs:
 
       - name: Sync website files to /var/www/site
         run: |
-          # 仅同步官网页面，营销/素材文件不部署
+          # 仅同步官网页面，营销/素材文件不部署。
+          # 注意：css/js 不带尾斜杠，才能保留为子目录（css/style.css、js/main.js），
+          # 若写成 "css/ js/" 会把内容直接铺到站点根目录导致 404。
+          # --delete 使远端与本地严格一致（并清理误铺到根目录的残留文件）。
           rsync -az --delete \
             index.html favicon.svg \
-            css/ js/ \
+            css js \
             ubuntu@82.156.112.159:/var/www/site/
 
       - name: Reload nginx
