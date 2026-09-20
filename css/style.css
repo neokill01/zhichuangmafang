@@ -143,6 +143,8 @@ a { color: inherit; text-decoration: none; }
 .brand--sm .brand__name { font-size: 16px; }
 .brand--sm .brand__logo { width: 30px; height: 30px; font-size: 13px; }
 .footer__copy { color: var(--text-dim); font-size: 14px; }
+.footer__icp { color: var(--text-dim); font-size: 13px; text-decoration: none; transition: color .2s ease; }
+.footer__icp:hover { color: var(--text); }
 
 /* ---------- 动画 ---------- */
 @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
