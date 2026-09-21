@@ -34,7 +34,7 @@ jobs:
           rm -rf .deploy-stage
           mkdir -p .deploy-stage
           cp index.html favicon.svg .deploy-stage/
-          cp -r css js .deploy-stage/
+          cp -r css js images .deploy-stage/
           rsync -az --delete .deploy-stage/ ubuntu@82.156.112.159:/var/www/site/
 
       - name: Reload nginx

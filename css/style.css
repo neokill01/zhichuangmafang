@@ -145,6 +145,10 @@ a { color: inherit; text-decoration: none; }
 .footer__copy { color: var(--text-dim); font-size: 14px; }
 .footer__icp { color: var(--text-dim); font-size: 13px; text-decoration: none; transition: color .2s ease; }
 .footer__icp:hover { color: var(--text); }
+.footer__legal { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; }
+.footer__psb { display: inline-flex; align-items: center; gap: 5px; color: var(--text-dim); font-size: 13px; text-decoration: none; transition: color .2s ease; }
+.footer__psb img { display: block; }
+.footer__psb:hover { color: var(--text); }
 
 /* ---------- 动画 ---------- */
 @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
