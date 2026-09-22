@@ -1,6 +1,11 @@
 # 智创麦坊官网
 
-静态站点（HTML/CSS/JS），部署在腾讯云服务器（82.156.112.159，nginx）。
+静态站点（HTML/CSS/JS），部署在腾讯云服务器（具体 IP 存于 GitHub Secrets 的 `SERVER_HOST`，不要在代码或文档中明文写出；SSH 私钥存于 `SERVER_SSH_KEY`）。
+
+## 安全约束（必须遵守）
+
+- 不要在任何代码、提交信息、PR 描述、文档或对话输出中暴露敏感信息：服务器 IP/域名、SSH 私钥、密码、API Key 等。
+- 服务器 IP 通过 GitHub Secrets 的 `SERVER_HOST` 在工作流中使用；SSH 私钥通过 `SERVER_SSH_KEY`。需要用到时引用 secret 名称，不写实际值。
 
 ## Git 工作流约束（必须遵守）
 

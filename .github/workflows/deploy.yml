@@ -31,7 +31,7 @@ jobs:
           ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
 
       - name: Trust server host
-        run: ssh-keyscan -H 82.156.112.159 >> ~/.ssh/known_hosts
+        run: ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
 
       - name: Sync website files to /var/www/site
         run: |
@@ -42,7 +42,7 @@ jobs:
           mkdir -p .deploy-stage
           cp index.html favicon.svg .deploy-stage/
           cp -r css js images .deploy-stage/
-          rsync -az --delete .deploy-stage/ ubuntu@82.156.112.159:/var/www/site/
+          rsync -az --delete .deploy-stage/ ubuntu@${{ secrets.SERVER_HOST }}:/var/www/site/
 
       - name: Reload nginx
-        run: ssh ubuntu@82.156.112.159 'sudo systemctl reload nginx'
+        run: ssh ubuntu@${{ secrets.SERVER_HOST }} 'sudo systemctl reload nginx'
