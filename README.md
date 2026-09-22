@@ -19,12 +19,20 @@ python3 -m http.server 8090
 
 推送到 `main` 分支后由 GitHub Actions 自动部署，合入 main 的 PR 即触发：
 
-- **腾讯云服务器（正式站点）**：`.github/workflows/deploy.yml` 通过 rsync 同步 `index.html`、`favicon.svg`、`css/`、`js/`、`images/` 到服务器并 reload nginx
-- **GitHub Pages**：`.github/workflows/pages.yml` 发布整仓内容
+- **腾讯云服务器（正式站点）**：`.github/workflows/deploy.yml` 通过 rsync 同步站点文件到服务器并 reload nginx
 
-仅改动说明/配置类文件（`**.md`、`.gitignore`、`docs/**`、`.claude/**`、`.github/**`）时两个工作流都不会触发，需要手动验证部署时在 Actions 页面用 `workflow_dispatch` 触发。
+仅改动说明/配置类文件时不会触发部署，忽略规则以 `.github/workflows/deploy.yml` 的 `paths-ignore` 为准；需要手动验证时在 Actions 页面用 `workflow_dispatch` 触发。
 
-开发流程见 [CLAUDE.md](CLAUDE.md)：新需求走分支 + PR，合入前须通过代码审查。
+仓库只部署到腾讯云服务器，不使用 GitHub Pages。
+
+### 静态资源缓存
+
+服务器对 `css/`、`js/`、`svg` 响应设了 7 天强缓存（`Cache-Control: max-age=604800`）。目前**只有 `css/style.css` 带版本号**（`index.html:15` 的 `?v=20260921`），`js/main.js` 与 `favicon.svg` 都是裸引用、没有 `?v=`。
+
+- 改 `css/style.css`：**必须**把那个 `?v=` 改成新日期，否则老访客在缓存过期前仍看到旧样式（2026-09-21 踩过一次）
+- 改 `js/main.js` 或 `favicon.svg`：目前没有版本号可用，稳妥做法是顺手给引用加上 `?v=<日期>`
+
+开发流程见 [CLAUDE.md](CLAUDE.md)：新需求走分支 + PR；合入前默认要过代码审查（豁免范围很小且有两个例外，以 CLAUDE.md 第 4 条为准）。
 
 ## 联系方式
 
