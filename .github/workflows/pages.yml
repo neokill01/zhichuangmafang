@@ -3,6 +3,13 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+    # 仅改动项目说明/配置类文件时不触发部署（只有全部改动都命中忽略规则才跳过）
+    paths-ignore:
+      - '**.md'
+      - '.gitignore'
+      - 'docs/**'
+      - '.claude/**'
+      - '.github/**'
   workflow_dispatch:
 
 permissions:
