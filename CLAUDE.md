@@ -1,6 +1,6 @@
 # 智创麦坊官网
 
-静态站点（HTML/CSS/JS），部署在腾讯云服务器（具体 IP 存于 GitHub Secrets 的 `SERVER_HOST`，不要在代码或文档中明文写出；SSH 私钥存于 `SERVER_SSH_KEY`）。
+静态站点（HTML/CSS/JS），部署在腾讯云服务器（nginx）。
 
 ## 安全约束（必须遵守）
 
