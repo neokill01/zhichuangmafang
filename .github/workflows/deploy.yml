@@ -10,9 +10,13 @@ on:
       - 'docs/**'
       - '.claude/**'
       - '.github/**'
-      # .deploy/ 已经被 .gitignore 忽略，正常不会出现在 diff 里；这条是防御性保留
+      # 必须保留：.gitignore 挡不住「已跟踪文件」及其删除出现在 diff 里
       - '.deploy/**'
   workflow_dispatch:
+
+# 最小权限：本工作流只需读仓库（部署靠 SSH key，不靠 GITHUB_TOKEN）
+permissions:
+  contents: read
 
 jobs:
   deploy:
@@ -37,7 +41,7 @@ jobs:
 
       - name: Sync website files to /var/www/site
         run: |
-          # 仅部署官网页面：先构建一个临时目录，只放 index.html/favicon.svg/css/js，
+          # 仅部署官网页面：先构建一个临时目录，只放 index.html/favicon.svg/css/js/images，
           # 再用「单目录 + --delete」同步，保证远端与站点内容严格一致，
           # 并清理多余文件（营销/素材文件不会进入站点）。
           rm -rf .deploy-stage

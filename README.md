@@ -25,7 +25,7 @@ python3 -m http.server 8090
 
 仓库只部署到腾讯云服务器，不使用 GitHub Pages。
 
-开发流程见 [CLAUDE.md](CLAUDE.md)：新需求走分支 + PR；涉及站点文件或工作流的改动，合入前须通过代码审查。
+开发流程见 [CLAUDE.md](CLAUDE.md)：新需求走分支 + PR；合入前**默认**要过代码审查，只有整轮改动都是纯文档才免审（口径以 CLAUDE.md 第 4 条为准）。
 
 ## 联系方式
 
