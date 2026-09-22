@@ -17,7 +17,14 @@ python3 -m http.server 8090
 
 ## 部署
 
-通过 GitHub Actions 自动部署到 GitHub Pages，推送到 `main` 分支即触发。
+推送到 `main` 分支后由 GitHub Actions 自动部署，合入 main 的 PR 即触发：
+
+- **腾讯云服务器（正式站点）**：`.github/workflows/deploy.yml` 通过 rsync 同步 `index.html`、`favicon.svg`、`css/`、`js/`、`images/` 到服务器并 reload nginx
+- **GitHub Pages**：`.github/workflows/pages.yml` 发布整仓内容
+
+仅改动说明/配置类文件（`**.md`、`.gitignore`、`docs/**`、`.claude/**`、`.github/**`）时两个工作流都不会触发，需要手动验证部署时在 Actions 页面用 `workflow_dispatch` 触发。
+
+开发流程见 [CLAUDE.md](CLAUDE.md)：新需求走分支 + PR，合入前须通过代码审查。
 
 ## 联系方式
 
