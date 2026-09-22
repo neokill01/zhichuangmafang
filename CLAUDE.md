@@ -1,4 +1,4 @@
-# 智创麦坊官网
+# 智创码坊官网
 
 静态站点（HTML/CSS/JS），部署在腾讯云服务器（nginx）。
 
@@ -18,4 +18,4 @@
 5. **部署随合入自动触发**：PR 合入 main 后，`.github/workflows/deploy.yml` 会自动 rsync 部署到服务器并 reload nginx，无需手动部署；部署结果以 Actions 运行状态为准。
    - **例外**：若改动仅涉及项目说明/配置类文件（`**.md`、`.gitignore`、`docs/**`、`.claude/**`、`.github/**`），两个部署工作流（deploy.yml / pages.yml）都不会触发。需要手动验证部署时，在 Actions 页面用 `workflow_dispatch` 手动触发。
 
-> 注：以上工作流约束（第 1–5 条）同时对 Claude 生效。GitHub 侧已对 main 开启分支保护（要求 PR、禁止直推、禁止 force push / 删除），对仓库管理员（包括你自己）同样生效；如需绕过保护（如紧急修复），需先在仓库 Settings → Branches 中临时关闭（注意：绕过后同样跳过第 4 条的审查要求）。GitHub 侧已对 main 开启分支保护（要求 PR、禁止直推、禁止 force push / 删除），对仓库管理员（包括你自己）同样生效；如需绕过保护（如紧急修复），需先在仓库 Settings → Branches 中临时关闭。
+> 注：以上工作流约束（第 1–5 条）同时对 Claude 生效。GitHub 侧已对 main 开启分支保护（要求 PR、禁止直推、禁止 force push / 删除），对仓库管理员（包括你自己）同样生效；如需绕过保护（如紧急修复），需先在仓库 Settings → Branches 中临时关闭（注意：绕过后同样跳过第 4 条的审查要求）。
