@@ -10,6 +10,7 @@ on:
       - 'docs/**'
       - '.claude/**'
       - '.github/**'
+      # .deploy/ 已经被 .gitignore 忽略，正常不会出现在 diff 里；这条是防御性保留
       - '.deploy/**'
   workflow_dispatch:
 

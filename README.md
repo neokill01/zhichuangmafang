@@ -19,9 +19,9 @@ python3 -m http.server 8090
 
 推送到 `main` 分支后由 GitHub Actions 自动部署，合入 main 的 PR 即触发：
 
-- **腾讯云服务器（正式站点）**：`.github/workflows/deploy.yml` 通过 rsync 同步 `index.html`、`favicon.svg`、`css/`、`js/`、`images/` 到服务器并 reload nginx
+- **腾讯云服务器（正式站点）**：`.github/workflows/deploy.yml` 通过 rsync 同步站点文件到服务器并 reload nginx
 
-仅改动说明/配置类文件（`**.md`、`.gitignore`、`docs/**`、`.claude/**`、`.github/**`、`.deploy/**`）时不会触发部署，需要手动验证时在 Actions 页面用 `workflow_dispatch` 触发。
+仅改动说明/配置类文件时不会触发部署，忽略规则以 `.github/workflows/deploy.yml` 的 `paths-ignore` 为准；需要手动验证时在 Actions 页面用 `workflow_dispatch` 触发。
 
 仓库只部署到腾讯云服务器，不使用 GitHub Pages。
 
