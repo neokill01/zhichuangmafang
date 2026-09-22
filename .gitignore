@@ -2,3 +2,7 @@
 node_modules/
 *.log
 .workbuddy/
+
+# 淘宝相关素材（本地物料，不入库）
+taobao*
+推广文案.md
