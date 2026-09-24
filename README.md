@@ -27,10 +27,23 @@ python3 -m http.server 8090
 
 ### 静态资源缓存
 
-服务器对 `css/`、`js/`、`svg` 响应设了 7 天强缓存（`Cache-Control: max-age=604800`）。目前**只有 `css/style.css` 带版本号**（`index.html:15` 的 `?v=20260921`），`js/main.js` 与 `favicon.svg` 都是裸引用、没有 `?v=`。
+服务器对 `css/`、`js/`、`svg` 响应设了 7 天强缓存（`Cache-Control: max-age=604800`）。
 
-- 改 `css/style.css`：**必须**把那个 `?v=` 改成新日期，否则老访客在缓存过期前仍看到旧样式（2026-09-21 踩过一次）
-- 改 `js/main.js` 或 `favicon.svg`：目前没有版本号可用，稳妥做法是顺手给引用加上 `?v=<日期>`
+- **带版本号**（`index.html` 中引用带 `?v=`）：`css/style.css`、`js/analytics.js`
+  - 改这两个文件：**必须**把 `?v=` 改成新日期，否则老访客在缓存过期前仍看到旧内容（2026-09-21 踩过一次）
+- **无版本号**（裸引用）：`js/main.js`、`favicon.svg`
+  - 改它们时没有版本号可用，稳妥做法是顺手给引用加上 `?v=<日期>`
+
+## 访问统计
+
+百度统计（站点 `www.zcmfopc.com`）。
+
+- **PV 统计**：官方加载代码内联在 `index.html` 的 `</head>` 前（按百度官方安装说明），站点 ID 即代码里 `hm.js?` 后的参数。这段代码不要挪进 `js/main.js`（该文件裸引用、无版本号，受 7 天强缓存影响，改动对老访客不生效）
+- **事件埋点**：`js/analytics.js`（引用带 `?v=` 版本号，改它必须同步更新日期）
+  - 点击埋点：HTML 元素上标 `data-track="<位置标识>"`，点击上报 `_trackEvent(click, <位置标识>, <页面路径>)`
+  - 转化埋点：滚动到 `#contact` 上报 `_trackEvent(view, contact-section, <页面路径>)`，只报一次
+- 查数据：百度统计后台 → 行为分析 → 事件分析
+- 代码安装检测：百度统计后台 → 代码安装检查（安装正确约 20 分钟出数据）
 
 开发流程见 [CLAUDE.md](CLAUDE.md)：新需求走分支 + PR；合入前默认要过代码审查（豁免范围很小且有两个例外，以 CLAUDE.md 第 3 条为准）。
 
