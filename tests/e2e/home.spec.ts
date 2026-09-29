@@ -43,13 +43,16 @@ test.describe('Hero 区', () => {
   test('打字机效果持续输出文本', async ({ page }) => {
     const home = new HomePage(page);
     await home.goto();
-    const first = await home.typingText.textContent();
+    const first = (await home.typingText.textContent()) ?? '';
     await expect(home.typingText).not.toHaveText('');
-    // 打字机为逐字动画，等待后文本应发生变化（或进入删除阶段）
-    await page.waitForTimeout(1_500);
-    const second = await home.typingText.textContent();
-    expect(second === first || (second ?? '').length > 0).toBeTruthy();
-    expect((second ?? '').length).toBeGreaterThan(0);
+    // 打字机节奏：每字 110ms，整词完成后暂停 1600ms 再删除。
+    // 固定 sleep 会落在暂停窗口里产生假失败，改为轮询「文本发生变化」（上限 10s）
+    let changed = false;
+    for (let i = 0; i < 40 && !changed; i++) {
+      await page.waitForTimeout(250);
+      changed = ((await home.typingText.textContent()) ?? '') !== first;
+    }
+    expect(changed, '打字机动画应持续推进（10s 内文本发生变化）').toBe(true);
   });
 
   test('终端模拟动画有内容输出', async ({ page }) => {
@@ -159,7 +162,18 @@ test.describe('不可删除内容存在性', () => {
   test('data-track 埋点属性完整', async ({ page }) => {
     const home = new HomePage(page);
     await home.goto();
-    for (const track of ['nav-contact', 'hero-services', 'hero-email', 'contact-email']) {
+    // 全量埋点守护：AGENTS.md 将 data-track 列为不可删除内容，漏一个就会静默丢数据
+    for (const track of [
+      'nav-contact',
+      'hero-services',
+      'hero-email',
+      'services-to-packages',
+      'package-cs',
+      'package-kb',
+      'package-flow',
+      'packages-email',
+      'contact-email',
+    ]) {
       await expect(page.locator(`[data-track="${track}"]`)).toHaveCount(1);
     }
   });

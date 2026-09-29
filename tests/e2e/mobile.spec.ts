@@ -12,7 +12,8 @@ test.describe('移动端（H5 视口）', () => {
   test('无横向溢出', async ({ page }) => {
     const home = new HomePage(page);
     await home.goto();
-    await expect(home.section('contact')).toBeInViewport({ timeout: 10_000 }).catch(() => {});
+    // 滚到底部再检测：reveal 动画与各区块全部渲染后才是最容易溢出的状态
+    await home.section('contact').scrollIntoViewIfNeeded();
     expect(await home.hasHorizontalOverflow()).toBe(false);
   });
 
