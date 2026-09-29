@@ -1,6 +1,6 @@
 # 智创码坊官网 — Agent 协作规范
 
-> 本文件是所有 AI Agent（Claude Code、Codex、Cursor、Copilot、WorkBuddy 等）在本仓库工作的唯一权威规范。`CLAUDE.md` 是指向本文件的软链接，请勿在两者中重复维护内容。
+> 本文件是所有 AI Agent（Claude Code、Codex、Cursor、Copilot、WorkBuddy 等）在本仓库工作的唯一权威规范。`CLAUDE.md` 仅包含一行 `@AGENTS.md` 导入指令（Claude Code 语法），其余 Agent 原生读取本文件，请勿在两者中重复维护内容。
 
 静态站点（HTML/CSS/JS），部署在腾讯云服务器（nginx）。
 
