@@ -10,6 +10,10 @@ on:
       - 'docs/**'
       - '.claude/**'
       - '.github/**'
+      # 测试用例与配置不参与站点部署产物（部署只挑 index.html/favicon.svg/css/js/images），
+      # 改动它们没必要重新部署，故一并忽略。
+      - 'tests/**'
+      - 'playwright.config.ts'
       # 必须保留：.gitignore 挡不住「已跟踪文件」及其删除出现在 diff 里
       - '.deploy/**'
   workflow_dispatch:

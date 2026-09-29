@@ -15,6 +15,29 @@ python3 -m http.server 8090
 # 访问 http://127.0.0.1:8090
 ```
 
+## 端到端测试
+
+Playwright 用例（`desktop` + `mobile` 双 project），用例与配置随仓库维护：
+
+- `tests/e2e/home.spec.ts`：首页结构、导航锚点跳转、各区块内容、埋点属性
+- `tests/e2e/mobile.spec.ts`：移动端汉堡菜单、各区块可见性、横向溢出检查
+- `tests/e2e/pages/home.page.ts`：页面对象（POM），不是用例
+
+```bash
+# 首次准备
+npm i -D @playwright/test && npx playwright install chromium
+
+# 跑测试：需先起被测站点，端口与 playwright.config.ts 的默认 baseURL 一致
+python3 -m http.server 5173 &
+npx playwright test                     # 全量（desktop + mobile）
+npx playwright test --project=mobile    # 只跑移动端
+E2E_BASE_URL=https://www.zcmfopc.com npx playwright test   # 对线上站点跑冒烟
+```
+
+- 测试产物（`test-results/`、`playwright-report/`）不入库，已在 `.gitignore` 忽略
+- 本机仅装 Chromium，`mobile` project 显式指定了 `browserName: 'chromium'`（iPhone 预设默认 WebKit，不改会报缺浏览器）
+- 改动 `index.html` / `css/` / `js/` 后，合入前至少跑一遍全量
+
 ## 部署
 
 推送到 `main` 分支后由 GitHub Actions 自动部署，合入 main 的 PR 即触发：
