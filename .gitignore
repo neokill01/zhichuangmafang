@@ -45,3 +45,9 @@ kubeconfig
 
 # deploy.yml 在 runner 仓库根创建的暂存目录（本地复现部署步骤时会留下）
 .deploy-stage/
+
+# playwright 测试产物（用例与配置本身入库，跑出来的产物不入库）
+test-results/
+playwright-report/
+playwright/.cache/
+
