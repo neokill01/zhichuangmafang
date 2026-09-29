@@ -445,34 +445,14 @@ a { color: inherit; text-decoration: none; }
 .process__card h3 { font-size: 19px; margin-bottom: 6px; }
 .process__card p { color: var(--text-dim); font-size: 15px; }
 
-/* ---------- 技术栈 Marquee ---------- */
-.marquee {
-  overflow: hidden; position: relative; padding: 12px 0;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
-}
-.marquee + .marquee { margin-top: 8px; }
-.marquee__track { display: flex; width: max-content; will-change: transform; }
-.marquee.offscreen .marquee__group { animation-play-state: paused; }
-
 /* Section 通用
    注意：这里刻意不用 content-visibility:auto —— 锚点跳转按估算高度定位，
    区块实际高度与估算偏差大时（如服务包区块）会跳到错误位置。 */
 .section { padding: 90px 0; }
-.marquee__group { display: flex; gap: 16px; padding-right: 16px; animation: marqueeMove 30s linear infinite; }
-.marquee--reverse .marquee__group { animation-direction: reverse; animation-duration: 38s; }
-.marquee:hover .marquee__group { animation-play-state: paused; }
-@keyframes marqueeMove { to { transform: translateX(-100%); } }
-
-.stack__item {
-  display: flex; align-items: center; gap: 10px; padding: 14px 22px;
-  font-size: 15px; font-weight: 600; white-space: nowrap;
-  transition: border-color .25s;
-}
-.stack__item:hover { border-color: rgba(124, 92, 255, 0.5); }
-.stack__dot { width: 10px; height: 10px; border-radius: 50%; background: var(--c); box-shadow: 0 0 10px var(--c); }
 
 /* ---------- CTA ---------- */
+/* 原技术栈区块（section--alt）移除后，由联系区上边框承担与工作流程区的分隔 */
+#contact { border-top: 1px solid var(--card-border); }
 .cta { padding: 64px 32px; text-align: center; max-width: 720px; margin: 0 auto; overflow: hidden; }
 .cta--glow { box-shadow: 0 0 60px rgba(124, 92, 255, 0.15), inset 0 0 40px rgba(124, 92, 255, 0.04); }
 .cta__scanline {

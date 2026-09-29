@@ -258,7 +258,7 @@ function initParticles() {
   if (!reduced) start();
 }
 
-// 离屏暂停：Hero 装饰动画与 Marquee 滚出视口后自动停摆
+// 离屏暂停：Hero 装饰动画滚出视口后自动停摆
 function initOffscreenPause() {
   if (!("IntersectionObserver" in window)) return;
   const io = new IntersectionObserver(
@@ -269,7 +269,7 @@ function initOffscreenPause() {
     },
     { rootMargin: "80px" }
   );
-  document.querySelectorAll(".hero, .marquee").forEach((el) => io.observe(el));
+  document.querySelectorAll(".hero").forEach((el) => io.observe(el));
 }
 
 // 年份
