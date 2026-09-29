@@ -25,7 +25,9 @@ function initReveal() {
     { threshold: 0.12 }
   );
   document
-    .querySelectorAll(".section__head, .positioning__card, .service, .cta, .reveal-item")
+    .querySelectorAll(
+      ".section__head, .positioning__card, .service, .package, .trust__item, .cta, .reveal-item"
+    )
     .forEach((el) => observer.observe(el));
 }
 
@@ -124,29 +126,29 @@ function initTerminal() {
   })();
 }
 
-// 卡片 3D 倾斜 + 光标聚光灯（rAF 调度；触屏设备禁用倾斜）
+// 卡片 3D 倾斜 + 光标聚光灯（rAF 调度；触屏设备禁用；无 .tilt 的卡片只做聚光灯）
 function initCardEffects() {
   if (window.matchMedia("(hover: none)").matches) return;
-  const cards = document.querySelectorAll(".tilt");
+  const cards = document.querySelectorAll(".tilt, .package, .trust__item, .pkg-terms");
   cards.forEach((card) => {
+    const tilt = card.classList.contains("tilt");
     let raf = 0, px = 0, py = 0;
     card.addEventListener("mousemove", (e) => {
       const r = card.getBoundingClientRect();
       px = e.clientX - r.left; py = e.clientY - r.top;
       card.style.setProperty("--mx", px + "px");
       card.style.setProperty("--my", py + "px");
-      if (!raf) {
-        raf = requestAnimationFrame(() => {
-          raf = 0;
-          const rx = ((py / r.height) - 0.5) * -8;
-          const ry = ((px / r.width) - 0.5) * 8;
-          card.style.transform = `perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
-        });
-      }
+      if (!tilt || raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const rx = ((py / r.height) - 0.5) * -8;
+        const ry = ((px / r.width) - 0.5) * 8;
+        card.style.transform = `perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
+      });
     }, { passive: true });
     card.addEventListener("mouseleave", () => {
       if (raf) { cancelAnimationFrame(raf); raf = 0; }
-      card.style.transform = "";
+      if (tilt) card.style.transform = "";
     });
   });
 }

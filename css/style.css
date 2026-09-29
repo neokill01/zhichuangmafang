@@ -319,6 +319,101 @@ a { color: inherit; text-decoration: none; }
 .service h3 { font-size: 19px; margin-bottom: 10px; }
 .service p { color: var(--text-dim); font-size: 14.5px; }
 
+.section__more { text-align: center; margin-top: 34px; }
+.section__more a {
+  font-size: 15px; font-weight: 600; color: var(--accent);
+  border-bottom: 1px solid transparent; transition: border-color .2s, color .2s;
+}
+.section__more a:hover { border-bottom-color: var(--accent); }
+
+/* ---------- 标准化服务包 ---------- */
+.packages-section { border-bottom: 1px solid var(--card-border); }
+
+.packages { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 22px; }
+
+.package {
+  --pkg: #7c5cff; --pkg-line: rgba(124, 92, 255, 0.45); --pkg-glow: rgba(124, 92, 255, 0.18);
+  display: flex; flex-direction: column; gap: 16px;
+  padding: 28px 26px 26px;
+  box-shadow: inset 0 3px 0 0 var(--pkg);
+  transition: transform .18s ease-out, border-color .3s, box-shadow .3s;
+}
+.package--teal { --pkg: #22d3ee; --pkg-line: rgba(34, 211, 238, 0.45); --pkg-glow: rgba(34, 211, 238, 0.18); }
+.package--amber { --pkg: #ffb347; --pkg-line: rgba(255, 179, 71, 0.45); --pkg-glow: rgba(255, 179, 71, 0.16); }
+.package:hover { border-color: var(--pkg-line); box-shadow: inset 0 3px 0 0 var(--pkg), 0 16px 48px var(--pkg-glow); }
+.package--featured { border-color: var(--pkg-line); box-shadow: inset 0 3px 0 0 var(--pkg), 0 0 44px var(--pkg-glow); }
+
+.package__head { display: flex; flex-direction: column; gap: 5px; }
+.package__headtop { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 24px; }
+.package__icon { font-size: 24px; line-height: 1; }
+.package__flag {
+  font-size: 11.5px; letter-spacing: 1px; padding: 3px 10px; border-radius: 999px;
+  color: var(--pkg); background: var(--pkg-glow); border: 1px solid var(--pkg-line);
+}
+.package__name { font-size: 20px; font-weight: 700; letter-spacing: .5px; }
+.package__slogan { color: var(--text-dim); font-size: 14px; }
+
+.package__price { display: flex; align-items: baseline; gap: 6px; }
+.package__num {
+  font-size: 32px; font-weight: 800; letter-spacing: -.5px; color: var(--pkg);
+  font-variant-numeric: tabular-nums;
+}
+.package__unit { color: var(--text-dim); font-size: 14px; }
+
+.package__list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+.package__list li {
+  position: relative; padding-left: 18px;
+  font-size: 14.5px; line-height: 1.65; color: var(--text-dim);
+}
+.package__list li::before {
+  content: ""; position: absolute; left: 0; top: .62em;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--pkg); box-shadow: 0 0 8px var(--pkg);
+}
+.package__list li b { color: var(--text); font-weight: 600; }
+
+.package__meta {
+  margin-top: auto; padding-top: 16px;
+  border-top: 1px dashed var(--card-border);
+  display: flex; flex-direction: column; gap: 7px;
+  font-size: 13px;
+}
+.package__meta > div { display: flex; gap: 10px; }
+.package__meta dt { flex: none; width: 60px; color: rgba(255, 255, 255, 0.38); }
+.package__meta dd { color: var(--text-dim); }
+
+.package__cta { justify-content: center; padding: 11px 20px; font-size: 14.5px; }
+
+.packages__h3 { font-size: 20px; font-weight: 700; margin: 56px 0 6px; }
+.trust { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px; margin-top: 18px; }
+.trust__item { padding: 22px 22px 24px; transition: border-color .3s, box-shadow .3s; }
+.trust__item:hover { border-color: rgba(124, 92, 255, 0.4); box-shadow: 0 14px 40px rgba(124, 92, 255, 0.12); }
+.trust__item h4 { font-size: 15.5px; margin-bottom: 8px; color: #b9a7ff; }
+.trust__item p { color: var(--text-dim); font-size: 14px; line-height: 1.7; }
+
+.pkg-terms { margin-top: 22px; padding: 26px 28px; }
+.pkg-terms__title { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+.pkg-terms__list {
+  list-style: none; display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 8px 30px;
+}
+.pkg-terms__list li {
+  position: relative; padding-left: 16px;
+  font-size: 13.5px; line-height: 1.7; color: var(--text-dim);
+}
+.pkg-terms__list li::before {
+  content: "▸"; position: absolute; left: 0; top: 0;
+  font-size: 12px; color: var(--accent); opacity: .75;
+}
+.pkg-terms__list b { color: var(--text); font-weight: 600; }
+
+.packages__cta {
+  margin-top: 30px; display: flex; align-items: center; justify-content: center;
+  gap: 16px; flex-wrap: wrap; text-align: center;
+}
+.packages__cta-note { color: var(--text-dim); font-size: 14px; }
+
 /* ---------- 工作流程 ---------- */
 .process { position: relative; max-width: 860px; margin: 0 auto; }
 .process__line {
@@ -360,8 +455,10 @@ a { color: inherit; text-decoration: none; }
 .marquee__track { display: flex; width: max-content; will-change: transform; }
 .marquee.offscreen .marquee__group { animation-play-state: paused; }
 
-/* Section 通用 */
-.section { padding: 90px 0; content-visibility: auto; contain-intrinsic-size: auto 800px; }
+/* Section 通用
+   注意：这里刻意不用 content-visibility:auto —— 锚点跳转按估算高度定位，
+   区块实际高度与估算偏差大时（如服务包区块）会跳到错误位置。 */
+.section { padding: 90px 0; }
 .marquee__group { display: flex; gap: 16px; padding-right: 16px; animation: marqueeMove 30s linear infinite; }
 .marquee--reverse .marquee__group { animation-direction: reverse; animation-duration: 38s; }
 .marquee:hover .marquee__group { animation-play-state: paused; }
@@ -431,6 +528,11 @@ a { color: inherit; text-decoration: none; }
   .hero__typing { justify-content: center; }
   .hide-sm { display: none; }
   .positioning, .services { grid-template-columns: 1fr; }
+  .packages, .pkg-terms__list { grid-template-columns: 1fr; }
+  .package { padding: 24px 20px 22px; }
+  .package__num { font-size: 28px; }
+  .packages__h3 { margin-top: 44px; }
+  .pkg-terms { padding: 22px 20px; }
   .process__line { left: 23px; }
   .process__node { width: 48px; height: 48px; font-size: 17px; }
 }
