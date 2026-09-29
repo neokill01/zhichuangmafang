@@ -12,7 +12,7 @@
   <meta property="og:type" content="website" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="stylesheet" href="css/style.css?v=20260921" />
+  <link rel="stylesheet" href="css/style.css?v=20260929-3" />
 
   <!-- 百度统计（官方加载代码，安装于 head 结束标签前） -->
   <script>
@@ -27,12 +27,14 @@
 </head>
 <body>
   <!-- 背景装饰 -->
+  <canvas class="bg-particles" id="bgParticles" aria-hidden="true"></canvas>
   <div class="bg-grid"></div>
   <div class="bg-glow bg-glow--1"></div>
   <div class="bg-glow bg-glow--2"></div>
 
   <!-- 导航 -->
   <header class="nav" id="nav">
+    <div class="nav__progress"><span id="scrollProgress"></span></div>
     <div class="container nav__inner">
       <a class="brand" href="#top">
         <span class="brand__logo">&lt;/&gt;</span>
@@ -41,6 +43,7 @@
       <nav class="nav__links" id="navLinks">
         <a href="#positioning">品牌定位</a>
         <a href="#services">合作范围</a>
+        <a href="#process">工作流程</a>
         <a href="#stack">技术栈</a>
         <a href="#contact">联系</a>
       </nav>
@@ -55,23 +58,47 @@
     <!-- Hero -->
     <section class="hero">
       <div class="container hero__inner">
-        <div class="hero__badge">✦ 智创码坊工作室</div>
-        <h1 class="hero__title">
-          智创码坊<br />
-          <span class="grad-text">让创意落地，让代码创造价值</span>
-        </h1>
-        <p class="hero__desc">
-          专注 AI 应用、移动端产品与研发效率工具。<br class="hide-sm" />
-          用技术把好点子打磨成真正好用的产品。
-        </p>
-        <div class="hero__actions">
-          <a class="btn btn--primary" href="#services" data-track="hero-services">了解合作范围</a>
-          <a class="btn btn--ghost" href="mailto:neokill88@gmail.com" data-track="hero-email">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 6 10 7 10-7"/></svg>
-            邮件联系
-          </a>
+        <div class="hero__copy">
+          <div class="hero__badge"><span class="hero__badge-dot"></span>智创码坊工作室 · OPEN FOR WORK</div>
+          <h1 class="hero__title">
+            智创码坊<br />
+            <span class="grad-text grad-text--flow">让创意落地</span>
+          </h1>
+          <p class="hero__typing">
+            专注
+            <span class="typing-wrap"><span id="typingText"></span><span class="typing-cursor"></span></span>
+          </p>
+          <p class="hero__desc">
+            用技术把好点子打磨成真正好用的产品，<br class="hide-sm" />
+            让代码创造价值。
+          </p>
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="#services" data-track="hero-services">了解合作范围</a>
+            <a class="btn btn--ghost" href="mailto:neokill88@gmail.com" data-track="hero-email">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 6 10 7 10-7"/></svg>
+              邮件联系
+            </a>
+          </div>
+        </div>
+
+        <div class="hero__visual">
+          <div class="terminal" id="terminal">
+            <div class="terminal__bar">
+              <span class="terminal__dot" style="--c:#ff5f57"></span>
+              <span class="terminal__dot" style="--c:#febc2e"></span>
+              <span class="terminal__dot" style="--c:#28c840"></span>
+              <span class="terminal__title">zhichuang — zsh</span>
+            </div>
+            <pre class="terminal__body" id="terminalBody"><code></code></pre>
+          </div>
+          <div class="hero__orbit" aria-hidden="true">
+            <span class="orbit orbit--1"></span>
+            <span class="orbit orbit--2"></span>
+            <span class="orbit-core"></span>
+          </div>
         </div>
       </div>
+      <div class="hero__scrollhint" aria-hidden="true"><span></span></div>
     </section>
 
     <!-- 品牌定位 -->
@@ -83,17 +110,17 @@
           <p class="section__sub">专注 AI 应用、移动端产品与研发效率工具。</p>
         </div>
         <div class="positioning">
-          <div class="positioning__card glass">
+          <div class="positioning__card glass tilt" data-tilt>
             <div class="positioning__icon">🤖</div>
             <h3>AI 应用</h3>
             <p>围绕大模型能力构建实用应用，让 AI 真正落地到工作与生活场景。</p>
           </div>
-          <div class="positioning__card glass">
+          <div class="positioning__card glass tilt" data-tilt>
             <div class="positioning__icon">📱</div>
             <h3>移动端产品</h3>
             <p>从 iOS 到 Android，打造流畅、精致、体验出色的移动应用。</p>
           </div>
-          <div class="positioning__card glass">
+          <div class="positioning__card glass tilt" data-tilt>
             <div class="positioning__icon">⚡</div>
             <h3>研发效率工具</h3>
             <p>用工程化手段打磨开发者工具链，让团队研发更快、更稳、更省心。</p>
@@ -111,27 +138,32 @@
           <p class="section__sub">覆盖从想法到上线的全流程，按需灵活协作。</p>
         </div>
         <div class="services">
-          <div class="service glass">
+          <div class="service glass tilt" data-tilt>
+            <div class="service__num">01</div>
             <div class="service__icon">📐</div>
             <h3>产品原型</h3>
             <p>快速验证想法，输出高保真交互原型与产品方案。</p>
           </div>
-          <div class="service glass">
+          <div class="service glass tilt" data-tilt>
+            <div class="service__num">02</div>
             <div class="service__icon">📲</div>
             <h3>移动应用</h3>
             <p>iOS / Android 原生与跨端应用的设计、开发与上架。</p>
           </div>
-          <div class="service glass">
+          <div class="service glass tilt" data-tilt>
+            <div class="service__num">03</div>
             <div class="service__icon">🌐</div>
             <h3>Web 平台</h3>
             <p>响应式网站、后台系统与 SaaS 平台的搭建与部署。</p>
           </div>
-          <div class="service glass">
+          <div class="service glass tilt" data-tilt>
+            <div class="service__num">04</div>
             <div class="service__icon">🧠</div>
             <h3>AI Agent</h3>
             <p>智能体、RAG 与自动化工作流的定制开发与集成。</p>
           </div>
-          <div class="service glass">
+          <div class="service glass tilt" data-tilt>
+            <div class="service__num">05</div>
             <div class="service__icon">💡</div>
             <h3>技术咨询</h3>
             <p>技术选型、架构设计与性能优化等专业咨询服务。</p>
@@ -140,29 +172,115 @@
       </div>
     </section>
 
+    <!-- 工作流程 -->
+    <section class="section" id="process">
+      <div class="container">
+        <div class="section__head">
+          <span class="section__tag">PROCESS</span>
+          <h2 class="section__title">工作流程</h2>
+          <p class="section__sub">四步交付，每一步都看得见进展。</p>
+        </div>
+        <div class="process">
+          <div class="process__line" aria-hidden="true"><span id="processLine"></span></div>
+          <div class="process__steps">
+            <div class="process__step reveal-item">
+              <div class="process__node">1</div>
+              <div class="process__card glass">
+                <h3>需求梳理</h3>
+                <p>把想法聊清楚，明确范围、用户与成功标准。</p>
+              </div>
+            </div>
+            <div class="process__step reveal-item">
+              <div class="process__node">2</div>
+              <div class="process__card glass">
+                <h3>原型设计</h3>
+                <p>高保真原型先行，先验证体验再动手开发。</p>
+              </div>
+            </div>
+            <div class="process__step reveal-item">
+              <div class="process__node">3</div>
+              <div class="process__card glass">
+                <h3>开发实现</h3>
+                <p>小步快跑、持续交付，进度和演示随时可看。</p>
+              </div>
+            </div>
+            <div class="process__step reveal-item">
+              <div class="process__node">4</div>
+              <div class="process__card glass">
+                <h3>上线交付</h3>
+                <p>部署、监控与文档一并交接，交付即可用。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- 技术栈 -->
-    <section class="section" id="stack">
+    <section class="section section--alt" id="stack">
       <div class="container">
         <div class="section__head">
           <span class="section__tag">TECH STACK</span>
           <h2 class="section__title">技术栈</h2>
         </div>
-        <div class="stack">
-          <div class="stack__item glass"><span class="stack__dot" style="--c:#61dafb"></span>React / React Native</div>
-          <div class="stack__item glass"><span class="stack__dot" style="--c:#3178c6"></span>TypeScript</div>
-          <div class="stack__item glass"><span class="stack__dot" style="--c:#42b883"></span>Vue / Flutter</div>
-          <div class="stack__item glass"><span class="stack__dot" style="--c:#f7df1e"></span>Node.js / Python</div>
-          <div class="stack__item glass"><span class="stack__dot" style="--c:#ff6b6b"></span>Swift / Kotlin</div>
-          <div class="stack__item glass"><span class="stack__dot" style="--c:#07c160"></span>微信小程序 / uni-app / Taro</div>
-          <div class="stack__item glass"><span class="stack__dot" style="--c:#7c5cff"></span>AI / LLM 应用</div>
+      </div>
+      <div class="marquee" data-speed="normal">
+        <div class="marquee__track">
+          <div class="marquee__group">
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#61dafb"></span>React / React Native</span>
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#3178c6"></span>TypeScript</span>
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#42b883"></span>Vue</span>
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#54c5f8"></span>Flutter</span>
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#f7df1e"></span>Node.js</span>
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#3776ab"></span>Python</span>
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#ff6b6b"></span>Swift / Kotlin</span>
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#7c5cff"></span>AI / LLM 应用</span>
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#07c160"></span>微信小程序 / uni-app / Taro</span>
+          </div>
+          <div class="marquee__group" aria-hidden="true">
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#61dafb"></span>React / React Native</span>
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#3178c6"></span>TypeScript</span>
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#42b883"></span>Vue</span>
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#54c5f8"></span>Flutter</span>
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#f7df1e"></span>Node.js</span>
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#3776ab"></span>Python</span>
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#ff6b6b"></span>Swift / Kotlin</span>
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#7c5cff"></span>AI / LLM 应用</span>
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#07c160"></span>微信小程序 / uni-app / Taro</span>
+          </div>
+        </div>
+      </div>
+      <div class="marquee marquee--reverse" data-speed="slow">
+        <div class="marquee__track">
+          <div class="marquee__group">
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#ff6b6b"></span>RAG</span>
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#ffb347"></span>Function Calling</span>
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#22d3ee"></span>AI Agent 工作流</span>
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#7c5cff"></span>MCP</span>
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#28c840"></span>Docker / CI&CD</span>
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#febc2e"></span>Supabase / Firebase</span>
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#3ec6ff"></span>PostgreSQL / Redis</span>
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#e8ecf4"></span>自动化测试</span>
+          </div>
+          <div class="marquee__group" aria-hidden="true">
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#ff6b6b"></span>RAG</span>
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#ffb347"></span>Function Calling</span>
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#22d3ee"></span>AI Agent 工作流</span>
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#7c5cff"></span>MCP</span>
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#28c840"></span>Docker / CI&CD</span>
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#febc2e"></span>Supabase / Firebase</span>
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#3ec6ff"></span>PostgreSQL / Redis</span>
+            <span class="stack__item glass"><span class="stack__dot" style="--c:#e8ecf4"></span>自动化测试</span>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- 联系 -->
-    <section class="section section--alt" id="contact">
+    <section class="section" id="contact">
       <div class="container">
-        <div class="cta glass">
+        <div class="cta glass cta--glow">
+          <div class="cta__scanline" aria-hidden="true"></div>
           <span class="section__tag">CONTACT</span>
           <h2 class="cta__title">有想法？一起聊聊</h2>
           <p class="cta__desc">无论是合作、反馈还是交流，欢迎随时来信。</p>
@@ -189,7 +307,7 @@
     </div>
   </footer>
 
-  <script src="js/main.js"></script>
+  <script src="js/main.js?v=20260929-3"></script>
   <script src="js/analytics.js?v=20260924" defer></script>
 </body>
 </html>
