@@ -318,6 +318,17 @@ a { color: inherit; text-decoration: none; }
 .service:hover .service__icon { animation: iconBounce .5s ease; }
 .service h3 { font-size: 19px; margin-bottom: 10px; }
 .service p { color: var(--text-dim); font-size: 14.5px; }
+/* 自研 Agent 产品的外链入口：虚线下划线区别于正文链接，
+   且不加背景/边框，避免抢掉卡片标题的视觉层级。 */
+.service__link {
+  margin-top: 14px; font-size: 13px; color: var(--accent);
+  /* 用 text-decoration 而非 border-bottom：卡片在窄视口会被折行，
+    边框只会在末行下方画一条，看着像只给半句话加了下划线。 */
+  text-decoration: underline dashed; text-decoration-thickness: 1px;
+  text-underline-offset: 4px; text-decoration-color: rgba(34, 211, 238, 0.45);
+  transition: color .2s ease, text-decoration-color .2s ease;
+}
+.service__link:hover { color: #7fe6ff; text-decoration-color: #7fe6ff; }
 
 .section__more { text-align: center; margin-top: 34px; }
 .section__more a {
@@ -450,85 +461,6 @@ a { color: inherit; text-decoration: none; }
    区块实际高度与估算偏差大时（如服务包区块）会跳到错误位置。 */
 .section { padding: 90px 0; }
 
-/* ---------- Agent 案例 ---------- */
-/* 只加浅底、不加边框：上一区块（服务包）已带 border-bottom，
-   这里若再加 border-top 会在同一位置叠成双线。 */
-.section--tint { background: var(--bg-alt); }
-
-.case {
-  display: grid; grid-template-columns: 296px 1fr;
-  transition: border-color .3s, box-shadow .3s;
-}
-.case:hover { border-color: rgba(124, 92, 255, 0.4); box-shadow: 0 20px 56px rgba(124, 92, 255, 0.14); }
-
-.case__side {
-  display: flex; flex-direction: column; align-items: center; gap: 14px;
-  padding: 34px 26px; text-align: center;
-  border-radius: var(--radius) 0 0 var(--radius);
-  background:
-    radial-gradient(circle at 50% 0%, rgba(124, 92, 255, 0.18), transparent 62%),
-    rgba(255, 255, 255, 0.02);
-  border-right: 1px solid var(--card-border);
-}
-.case__avatar {
-  display: block; width: 132px; height: 132px; border-radius: 26px;
-  border: 1px solid rgba(124, 92, 255, 0.35);
-  box-shadow: 0 14px 36px rgba(124, 92, 255, 0.28);
-  background: rgba(255, 255, 255, 0.04);
-}
-.case__platform {
-  display: inline-flex; align-items: center; gap: 7px;
-  font-size: 12px; letter-spacing: .5px; padding: 4px 12px; border-radius: 999px;
-  color: #7fe6ff; background: rgba(34, 211, 238, 0.1); border: 1px solid rgba(34, 211, 238, 0.32);
-}
-.case__platform::before {
-  content: ""; width: 6px; height: 6px; border-radius: 50%;
-  background: #28c840; box-shadow: 0 0 8px #28c840;
-}
-.case__specs {
-  list-style: none; width: 100%; margin-top: 4px;
-  display: flex; flex-direction: column; gap: 9px;
-  font-size: 13px; text-align: left;
-}
-.case__specs li {
-  display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
-  padding-top: 9px; border-top: 1px dashed var(--card-border);
-}
-/* 说明文字与规格键名不能用 rgba(255,255,255,.38)（在卡片底上对比度仅 ~3.3:1，
-   低于 WCAG AA 4.5:1），统一用容器内仍达 6:1 以上的取值。 */
-.case__spec-k { flex: none; color: rgba(255, 255, 255, 0.55); }
-.case__spec-v { color: var(--text-dim); text-align: right; }
-.case__spec-v--live { color: #7ce38b; }
-
-.case__main { padding: 34px 34px 30px; display: flex; flex-direction: column; gap: 16px; }
-.case__title-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-.case__title { font-size: 28px; font-weight: 800; letter-spacing: 1px; }
-.case__role {
-  font-size: 13px; font-weight: 600; color: #b9a7ff; padding: 3px 12px; border-radius: 999px;
-  background: rgba(124, 92, 255, 0.12); border: 1px solid rgba(124, 92, 255, 0.3);
-}
-.case__desc { color: var(--text-dim); font-size: 15.5px; line-height: 1.75; }
-.case__tags { display: flex; flex-wrap: wrap; gap: 8px; }
-.case__tags span {
-  font-size: 12.5px; padding: 4px 12px; border-radius: 999px;
-  color: var(--text-dim); background: rgba(255, 255, 255, 0.04); border: 1px solid var(--card-border);
-}
-.case__try-title { font-size: 13px; letter-spacing: 1px; color: var(--accent); font-weight: 600; margin-bottom: 10px; }
-.case__examples { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-/* 示例问法是纯展示内容、不可点击，因此不加 :hover 态，
-   避免做成「看起来能点」的假按钮。 */
-.case__examples li {
-  position: relative; padding: 10px 14px 10px 34px; border-radius: 10px;
-  background: rgba(255, 255, 255, 0.03); border: 1px solid var(--card-border);
-  font-size: 14.5px; color: var(--text-dim); line-height: 1.6;
-}
-.case__examples li::before {
-  content: "›"; position: absolute; left: 14px; top: 50%; transform: translateY(-52%);
-  font-family: ui-monospace, monospace; font-size: 18px; color: var(--accent); opacity: .85;
-}
-.case__actions { display: flex; gap: 14px; flex-wrap: wrap; }
-.case__note { color: var(--text-dim); font-size: 13px; line-height: 1.7; }
-
 /* ---------- CTA ---------- */
 /* 原技术栈区块（section--alt）移除后，由联系区上边框承担与工作流程区的分隔 */
 #contact { border-top: 1px solid var(--card-border); }
@@ -571,15 +503,6 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 960px) {
   .hero__inner { grid-template-columns: 1fr; gap: 40px; }
   .hero__visual { max-width: 480px; margin: 0 auto; width: 100%; }
-  .case { grid-template-columns: 1fr; }
-  .case__side { border-right: none; border-bottom: 1px solid var(--card-border); border-radius: var(--radius) var(--radius) 0 0; }
-  .case__specs { max-width: 420px; }
-}
-/* 导航增至 6 项后，761–775px 区间（汉堡菜单断点之上）会挤到换行，
-   此处收窄间距与字号；≤760px 的抽屉菜单保持原字号（用 :not(.open) 排除）。 */
-@media (max-width: 900px) {
-  .nav__links { gap: 16px; }
-  .nav__links:not(.open) a { font-size: 14px; }
 }
 @media (max-width: 760px) {
   .bg-glow { animation: none; }
@@ -603,16 +526,6 @@ a { color: inherit; text-decoration: none; }
   .pkg-terms { padding: 22px 20px; }
   .process__line { left: 23px; }
   .process__node { width: 48px; height: 48px; font-size: 17px; }
-  .case__side { padding: 28px 20px; }
-  .case__main { padding: 26px 20px 24px; }
-  .case__avatar { width: 108px; height: 108px; border-radius: 22px; }
-  .case__title { font-size: 23px; }
-  .case__desc { font-size: 14.5px; }
-  .case__examples li { font-size: 14px; padding: 9px 12px 9px 30px; }
-  .case__examples li::before { left: 12px; }
-  .case__actions { gap: 10px; }
-  .case__actions .btn { width: 100%; justify-content: center; }
-  .case__note { font-size: 12.5px; }
 }
 
 /* ---------- 降级 ---------- */
