@@ -321,7 +321,10 @@ a { color: inherit; text-decoration: none; }
 /* 自研 Agent 产品的外链入口：虚线下划线区别于正文链接，
    且不加背景/边框，避免抢掉卡片标题的视觉层级。 */
 .service__link {
-  margin-top: 14px; font-size: 13px; color: var(--accent);
+  /* 必须显式 inline-block：a 默认是 inline，而 inline 元素的垂直外边距不生效，
+     margin-top 会静默失效（全局已 * { margin: 0 } 清零段落边距，
+     间距就只剩行高带来的空隙，不稳定）。 */
+  display: inline-block; margin-top: 14px; font-size: 13px; color: var(--accent);
   /* 用 text-decoration 而非 border-bottom：卡片在窄视口会被折行，
     边框只会在末行下方画一条，看着像只给半句话加了下划线。 */
   text-decoration: underline dashed; text-decoration-thickness: 1px;
