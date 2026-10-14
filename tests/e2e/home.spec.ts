@@ -5,7 +5,6 @@ const SECTIONS = [
   { id: 'positioning', label: '品牌定位' },
   { id: 'services', label: '合作范围' },
   { id: 'packages', label: 'AI 服务包' },
-  { id: 'showcase', label: 'Agent 案例' },
   { id: 'process', label: '工作流程' },
   { id: 'contact', label: '联系' },
 ];
