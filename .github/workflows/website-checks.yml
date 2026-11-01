@@ -1,0 +1,41 @@
+name: Website checks
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install pinned browser test dependencies
+        run: |
+          npm install --prefix "$RUNNER_TEMP/website-qa" @playwright/test@1.56.1
+          ln -s "$RUNNER_TEMP/website-qa/node_modules" node_modules
+          "$RUNNER_TEMP/website-qa/node_modules/.bin/playwright" install --with-deps chromium --only-shell
+      - name: Syntax and browser regression
+        env:
+          E2E_BASE_URL: http://127.0.0.1:5173
+        run: |
+          node --check js/main.js
+          python3 -m http.server 5173 --bind 127.0.0.1 > "$RUNNER_TEMP/website-server.log" 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid"' EXIT
+          for attempt in $(seq 1 30); do
+            if curl --silent --fail http://127.0.0.1:5173/ > /dev/null; then break; fi
+            sleep 1
+          done
+          "$RUNNER_TEMP/website-qa/node_modules/.bin/playwright" test --workers=2
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: website-test-results
+          path: test-results/
+          retention-days: 3

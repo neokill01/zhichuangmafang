@@ -16,6 +16,9 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent, #7c5cff); outline-offset: 5px; }
+.skip-link { position: fixed; top: 8px; left: 16px; z-index: 200; padding: 12px 18px; background: #101629; color: #fff; border-radius: 8px; transform: translateY(-160%); }
+.skip-link:focus { transform: none; }
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
@@ -111,7 +114,7 @@ a { color: inherit; text-decoration: none; }
 .nav__links a:hover { color: var(--text); }
 .nav__links a:hover::after { width: 100%; }
 
-.nav__toggle { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 6px; }
+.nav__toggle { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 11px; min-width: 44px; min-height: 44px; justify-content: center; align-items: center; }
 .nav__toggle span { width: 22px; height: 2px; background: var(--text); border-radius: 2px; transition: .3s; }
 
 /* ---------- 按钮 ---------- */
@@ -533,6 +536,7 @@ a { color: inherit; text-decoration: none; }
 
 /* ---------- 降级 ---------- */
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .reveal, .reveal-item { opacity: 1; transform: none; }
 }
