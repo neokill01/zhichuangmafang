@@ -20,7 +20,7 @@ jobs:
           install -d -m 700 ~/.ssh
           ssh-keyscan -T 10 -H "$SERVER_HOST" >> ~/.ssh/known_hosts
           ssh -o BatchMode=yes -o ConnectTimeout=15 "ubuntu@$SERVER_HOST" 'python3 -' <<'PY'
-          import json,os,platform,shutil,socket,subprocess,glob
+          import json,os,platform,shutil,socket,subprocess,glob,urllib.request
           def probe(args):
             try:
               r=subprocess.run(args,capture_output=True,text=True,timeout=10)
@@ -36,6 +36,11 @@ jobs:
           report['privateServiceActive']=probe(['systemctl','show','agentic-devos.service','--property=ActiveState','--value'])
           report['uploadedArchiveBytes']=max([os.path.getsize(p) for p in glob.glob('/tmp/agentic-devos-*.tgz')]+[0])
           report['releaseDirectories']=len(glob.glob('/opt/agentic-devos/releases/*'))
-          report['websiteServiceActive']=probe(['systemctl','show','nginx.service','--property=ActiveState','--value'])
+          try:
+            with urllib.request.urlopen('https://nodejs.org/dist/latest-v24.x/SHASUMS256.txt',timeout=15) as r:
+              rows=r.read(100000).decode().splitlines()
+            row=next(x for x in rows if x.endswith('-linux-x64.tar.xz'))
+            report['officialNode24Metadata']=row.split()
+          except Exception as e:report['officialNode24MetadataError']=type(e).__name__
           print(json.dumps(report))
           PY
