@@ -8,7 +8,7 @@ permissions:
   contents: read
 concurrency:
   group: devos-private-deployment
-  cancel-in-progress: false
+  cancel-in-progress: true
 jobs:
   deploy:
     runs-on: ubuntu-24.04
@@ -26,14 +26,11 @@ jobs:
       - name: Build and validate the pinned console
         working-directory: devos
         run: npm ci && npm run build:console && npm run test:console
-      - name: Package an isolated Node runtime and application
+      - name: Package the application without uploading the large runtime
         run: |
           set -euo pipefail
           stage="$RUNNER_TEMP/devos-release"
-          mkdir -p "$stage/runtime/bin" "$stage/apps/api" "$stage/apps/console" "$stage/packages/agent-core" "$stage/packages/tool-kit"
-          cp "$(command -v node)" "$stage/runtime/bin/node"
-          node_root=$(dirname "$(dirname "$(command -v node)")")
-          cp "$node_root/LICENSE" "$stage/runtime/LICENSE"
+          mkdir -p "$stage/apps/api" "$stage/apps/console" "$stage/packages/agent-core" "$stage/packages/tool-kit"
           cp devos/package.json "$stage/package.json"
           cp devos/apps/api/server.js devos/apps/api/package.json "$stage/apps/api/"
           cp -r devos/apps/console/dist "$stage/apps/console/"
@@ -85,16 +82,31 @@ jobs:
           fi
           install -d -m 755 "$base/releases" "$base/backups"
           install -d -o agentic-devos -g agentic-devos -m 700 "$data"
+          # Fetch the official compressed runtime on the server; never replace system Node.
+          runtime_name=node-v24.22.2-linux-x64
+          runtime_sha=48cc0e21e048790e54c0cf5749c2725005313d652651c40b7a21feb9697aaf75
+          runtime_cache="$base/runtime-cache"
+          install -d -m 755 "$runtime_cache"
+          if [ ! -x "$runtime_cache/$runtime_name/bin/node" ]; then
+            curl --fail --location --silent --show-error --connect-timeout 15 --max-time 240 --retry 1 \
+              "https://nodejs.org/dist/v24.22.2/$runtime_name.tar.xz" -o "$runtime_cache/$runtime_name.tar.xz"
+            printf '%s  %s\n' "$runtime_sha" "$runtime_cache/$runtime_name.tar.xz" | sha256sum -c - >/dev/null
+            runtime_stage=$(mktemp -d "$runtime_cache/.extract.XXXXXX")
+            tar --no-same-owner -xJf "$runtime_cache/$runtime_name.tar.xz" -C "$runtime_stage"
+            mv "$runtime_stage/$runtime_name" "$runtime_cache/$runtime_name"
+            rmdir "$runtime_stage"
+          fi
           target="$base/releases/$release"
           [ ! -e "$target" ] || { echo 'Release already exists'; exit 1; }
           install -d -m 755 "$target"
           tar --no-same-owner -xzf "$archive" -C "$target"
+          ln -s "$runtime_cache/$runtime_name" "$target/runtime"
           "$target/runtime/bin/node" -e 'if(Number(process.versions.node.split(".")[0])!==24)process.exit(1)'
           previous=$(readlink "$base/current" || true)
           had_unit=false
           if [ -f "$unit" ]; then cp "$unit" "$base/backups/$release.service"; had_unit=true; fi
           rollback() {
-            trap - ERR
+            trap - ERR HUP INT TERM
             echo 'Verification failed; restoring previous private service'
             systemctl stop agentic-devos || true
             if [ "$had_unit" = true ]; then cp "$base/backups/$release.service" "$unit"; else rm -f "$unit"; fi
@@ -104,7 +116,7 @@ jobs:
             rm -f "$archive"
             exit 1
           }
-          trap rollback ERR
+          trap rollback ERR HUP INT TERM
           cat > "$unit" <<'UNIT'
           # Managed by Agentic DevOS private deployment
           [Unit]
@@ -174,7 +186,7 @@ jobs:
           print(json.dumps({'deployment':'private_console_verified','service':'agentic-devos','loopbackPort':4317,'taskStatus':task['status'],'repairs':task['repairs'],'commandExitCodes':exits,'modelCalls':0,'acceptance':report['acceptance']}))
           PY
           systemctl enable agentic-devos >/dev/null 2>&1
-          trap - ERR
+          trap - ERR HUP INT TERM
           rm -f "$archive"
           printf 'Private console release %s is active. Existing website and system Node unchanged.\n' "$release"
           REMOTE
