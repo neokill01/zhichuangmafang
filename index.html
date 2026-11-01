@@ -12,7 +12,7 @@
   <meta property="og:type" content="website" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="stylesheet" href="css/style.css?v=20261014-2" />
+  <link rel="stylesheet" href="css/style.css?v=20261101-1" />
 
   <!-- 百度统计（官方加载代码，安装于 head 结束标签前） -->
   <script>
@@ -24,8 +24,10 @@
       s.parentNode.insertBefore(hm, s);
     })();
   </script>
+  <noscript><style>.reveal-item { opacity: 1; transform: none; }</style></noscript>
 </head>
 <body>
+  <a class="skip-link" href="#top">跳到主要内容</a>
   <!-- 背景装饰 -->
   <canvas class="bg-particles" id="bgParticles" aria-hidden="true"></canvas>
   <div class="bg-grid"></div>
@@ -40,7 +42,7 @@
         <span class="brand__logo">&lt;/&gt;</span>
         <span class="brand__name">智创码坊</span>
       </a>
-      <nav class="nav__links" id="navLinks">
+      <nav class="nav__links" id="navLinks" aria-label="主导航">
         <a href="#positioning">品牌定位</a>
         <a href="#services">合作范围</a>
         <a href="#packages">AI 服务包</a>
@@ -48,13 +50,13 @@
         <a href="#contact">联系</a>
       </nav>
       <a class="btn btn--ghost nav__cta" href="#contact" data-track="nav-contact">合作洽谈</a>
-      <button class="nav__toggle" id="navToggle" aria-label="菜单">
+      <button class="nav__toggle" id="navToggle" type="button" aria-label="展开菜单" aria-expanded="false" aria-controls="navLinks">
         <span></span><span></span><span></span>
       </button>
     </div>
   </header>
 
-  <main id="top">
+  <main id="top" tabindex="-1">
     <!-- Hero -->
     <section class="hero">
       <div class="container hero__inner">
@@ -377,7 +379,7 @@
     </div>
   </footer>
 
-  <script src="js/main.js?v=20261014-2"></script>
+  <script src="js/main.js?v=20261101-1"></script>
   <script src="js/analytics.js?v=20260924" defer></script>
 </body>
 </html>

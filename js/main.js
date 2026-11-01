@@ -2,14 +2,35 @@
 function initMenu() {
   const toggle = document.getElementById("navToggle");
   const links = document.getElementById("navLinks");
-  toggle.addEventListener("click", () => links.classList.toggle("open"));
+  if (!toggle || !links) return;
+  const mobile = window.matchMedia("(max-width: 760px)");
+  function setOpen(open, restoreFocus = false) {
+    links.classList.toggle("open", open);
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.setAttribute("aria-label", open ? "收起菜单" : "展开菜单");
+    if (restoreFocus) toggle.focus();
+  }
+  toggle.addEventListener("click", () => setOpen(!links.classList.contains("open")));
   links.querySelectorAll("a").forEach((a) =>
-    a.addEventListener("click", () => links.classList.remove("open"))
+    a.addEventListener("click", () => setOpen(false))
   );
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && mobile.matches && links.classList.contains("open")) {
+      setOpen(false, true);
+    }
+  });
+  document.addEventListener("click", (event) => {
+    if (mobile.matches && !toggle.contains(event.target) && !links.contains(event.target)) setOpen(false);
+  });
+  mobile.addEventListener("change", () => setOpen(false));
 }
 
 // 滚动渐入动画（错峰）
 function initReveal() {
+  if (!("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.querySelectorAll(".reveal-item").forEach(el => el.classList.add("reveal-in"));
+    return;
+  }
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((e) => {
@@ -65,6 +86,10 @@ function initTyping() {
   const el = document.getElementById("typingText");
   if (!el) return;
   const words = ["AI 应用开发", "移动端产品", "研发效率工具", "AI Agent 定制"];
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    el.textContent = words[0];
+    return;
+  }
   let wi = 0, ci = 0, deleting = false;
   (function tick() {
     const word = words[wi];
@@ -90,6 +115,15 @@ function initTerminal() {
     { cls: "t-str", text: "🚀 产品已上线 · 让代码创造价值" },
     { cls: "t-dim", text: "$ " },
   ];
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    codeEl.replaceChildren(...lines.flatMap(({ cls, text }) => {
+      const line = document.createElement("span");
+      line.className = cls;
+      line.textContent = text;
+      return [line, "\n"];
+    }));
+    return;
+  }
   let li = 0, chi = 0;
   let current = null, caret = null;
 
@@ -128,7 +162,7 @@ function initTerminal() {
 
 // 卡片 3D 倾斜 + 光标聚光灯（rAF 调度；触屏设备禁用；无 .tilt 的卡片只做聚光灯）
 function initCardEffects() {
-  if (window.matchMedia("(hover: none)").matches) return;
+  if (window.matchMedia("(hover: none), (prefers-reduced-motion: reduce)").matches) return;
   const cards = document.querySelectorAll(".tilt, .package, .trust__item, .pkg-terms");
   cards.forEach((card) => {
     const tilt = card.classList.contains("tilt");
